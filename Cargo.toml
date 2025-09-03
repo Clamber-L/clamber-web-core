@@ -1,0 +1,48 @@
+[package]
+name = "clamber-web-core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clamber-core = "0.1.6"
+axum = { version = "0.8.1", features = [
+    "http2",
+    "query",
+    "tracing",
+    "ws",
+    "macros",
+    "multipart",
+] }
+tower-http = { version = "0.6.2", features = ["cors"] }
+axum-extra = "0.10.0"
+tower = "0.5.2"
+
+# serialize and deserialize
+serde = { version = "1.0.215", features = ["derive"] }
+serde_yaml = "0.9.33"
+serde_json = "1.0.133"
+
+# orm
+sea-orm = { version = "1.1.1", features = [
+    "sqlx-mysql",
+    "runtime-tokio-rustls",
+    "macros",
+] }
+
+# error handling
+thiserror = "2.0"
+
+# async runtime
+tokio = { version = "1.41.1", features = ["rt", "rt-multi-thread", "macros"] }
+
+# time and date
+chrono = { version = "0.4.41", features = ["serde"] }
+
+# password hashing
+argon2 = "0.5.3"
+
+# logging
+tracing = "0.1"
+
+# url parsing
+url = "2.5"
