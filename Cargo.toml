@@ -2,6 +2,13 @@
 name = "clamber-web-core"
 version = "0.1.0"
 edition = "2024"
+authors = ["Clamber println_g1@163.com"]
+description = "library for clamber web core"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/Clamber-L/clamber-web-core"
+homepage = "https://github.com/Clamber-L/clamber-web-core"
+documentation = "https://docs.rs/clamber-web-core"
+readme = "README.md"
 
 [dependencies]
 clamber-core = "0.1.6"
