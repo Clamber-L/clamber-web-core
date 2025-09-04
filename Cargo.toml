@@ -36,6 +36,9 @@ sea-orm = { version = "1.1.1", features = [
     "macros",
 ] }
 
+# redis
+redis = { version = "0.32.5", features = ["tokio-comp", "connection-manager"] }
+
 # error handling
 thiserror = "2.0"
 

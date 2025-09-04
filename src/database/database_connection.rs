@@ -81,21 +81,18 @@ impl SeaOrmConnection {
     }
 
     /// 获取连接统计信息
-    pub fn get_stats(&self) -> ConnectionStats {
-        ConnectionStats {
+    pub fn get_stats(&self) -> DatabaseConnectionStats {
+        DatabaseConnectionStats {
             max_connections: self.config.max_connections,
             min_connections: self.config.min_connections,
             connect_timeout: self.config.connect_timeout_secs,
             acquire_timeout: self.config.acquire_timeout_secs,
         }
     }
-
 }
 
 /// 便利函数：从 URL 创建连接（最常用）
-pub async fn create_connection_from_url(
-    database_url: &str,
-) -> DatabaseResult<DatabaseConnection> {
+pub async fn create_connection_from_url(database_url: &str) -> DatabaseResult<DatabaseConnection> {
     let sea_connection = SeaOrmConnection::from_url(database_url).await?;
     Ok(sea_connection.inner)
 }
@@ -110,7 +107,7 @@ pub async fn create_connection_from_config(
 
 /// 连接统计信息
 #[derive(Debug, Clone)]
-pub struct ConnectionStats {
+pub struct DatabaseConnectionStats {
     pub max_connections: u32,
     pub min_connections: u32,
     pub connect_timeout: u64,
@@ -119,7 +116,7 @@ pub struct ConnectionStats {
 
 /// 数据库健康状态
 #[derive(Debug, Clone)]
-pub struct HealthStatus {
+pub struct DatabaseHealthStatus {
     pub is_healthy: bool,
     pub response_time_ms: u64,
     pub message: String,
@@ -155,7 +152,7 @@ mod tests {
     #[test]
     fn test_connection_stats() {
         let config = DatabaseConfig::default();
-        let stats = ConnectionStats {
+        let stats = DatabaseConnectionStats {
             max_connections: config.max_connections,
             min_connections: config.min_connections,
             connect_timeout: config.connect_timeout_secs,

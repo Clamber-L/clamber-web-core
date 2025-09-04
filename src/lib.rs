@@ -8,14 +8,17 @@
 //! - 配置管理
 
 pub mod database;
+pub mod redis;
 
 // 重新导出主要模块
 pub use database::*;
+pub use redis::*;
 
 // 重新导出核心依赖
 pub use axum;
 pub use chrono;
 pub use clamber_core;
+pub use redis as redis_crate;
 pub use sea_orm;
 pub use serde;
 pub use serde_json;
