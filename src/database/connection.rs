@@ -4,14 +4,13 @@
 
 use crate::database::{DatabaseConfig, DatabaseError, DatabaseResult};
 use sea_orm::{ConnectOptions, Database, DatabaseConnection as SeaOrmConnection};
-use std::sync::Arc;
 use tracing::{error, info, warn};
 
 /// 数据库连接封装
 #[derive(Debug, Clone)]
 pub struct DatabaseConnection {
     /// SeaORM 连接实例
-    inner: Arc<SeaOrmConnection>,
+    pub inner: SeaOrmConnection,
     /// 配置信息
     config: DatabaseConfig,
 }
@@ -45,25 +44,13 @@ impl DatabaseConnection {
         info!("数据库连接成功建立");
 
         Ok(Self {
-            inner: Arc::new(connection),
+            inner: connection,
             config,
         })
     }
 
-    /// 获取 SeaORM 连接引用
-    pub fn get_connection(&self) -> &SeaOrmConnection {
-        &self.inner
-    }
-
-    /// 获取配置信息
-    pub fn get_config(&self) -> &DatabaseConfig {
-        &self.config
-    }
-
     /// 测试连接是否有效
     pub async fn ping(&self) -> DatabaseResult<()> {
-        
-
         self.inner.ping().await.map_err(|e| {
             warn!("数据库连接测试失败: {}", e);
             DatabaseError::connection(format!("连接测试失败: {}", e))
@@ -75,19 +62,11 @@ impl DatabaseConnection {
 
     /// 关闭连接
     pub async fn close(self) -> DatabaseResult<()> {
-        
-
-        // 由于 SeaORM 的连接是 Arc 包装的，我们需要确保没有其他引用
-        if let Ok(connection) = Arc::try_unwrap(self.inner) {
-            connection
-                .close()
-                .await
-                .map_err(|e| DatabaseError::connection(format!("关闭连接失败: {}", e)))?;
-            info!("数据库连接已关闭");
-        } else {
-            warn!("无法关闭数据库连接：仍有其他引用存在");
-        }
-
+        self.inner
+            .close()
+            .await
+            .map_err(|e| DatabaseError::connection(format!("关闭连接失败: {}", e)))?;
+        info!("数据库连接已关闭");
         Ok(())
     }
 
