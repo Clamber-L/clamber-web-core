@@ -2,9 +2,7 @@
 //!
 //! 测试 clamber-web-core 数据库模块的各种功能
 
-use clamber_web_core::database::{
-    DatabaseConfig, DatabaseConnection, DatabaseManager, create_connection_from_url,
-};
+use clamber_web_core::database::{DatabaseConfig, SeaOrmConnection, create_connection_from_url};
 use std::time::Duration;
 use tokio::time::Instant;
 use tracing::{error, info, warn};
@@ -38,9 +36,9 @@ async fn test_basic_connection() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-/// 测试 2: DatabaseConnection 结构体测试
+/// 测试 2: SeaOrmConnection 结构体测试
 async fn test_database_connection_struct() -> Result<(), Box<dyn std::error::Error>> {
-    info!("🧪 测试 2: DatabaseConnection 结构体功能");
+    info!("🧪 测试 2: SeaOrmConnection 结构体功能");
 
     let config = DatabaseConfig {
         url: build_database_url(),
@@ -54,11 +52,11 @@ async fn test_database_connection_struct() -> Result<(), Box<dyn std::error::Err
         slow_threshold_ms: 1000,
     };
 
-    let db_conn = DatabaseConnection::new(config).await?;
+    let db_conn = SeaOrmConnection::new(config.clone()).await?;
 
     // 测试 ping
     db_conn.ping().await?;
-    info!("✅ DatabaseConnection ping 测试成功");
+    info!("✅ SeaOrmConnection ping 测试成功");
 
     // 测试获取连接引用（通过 inner 字段）
     let conn_ref = &db_conn.inner;
@@ -66,32 +64,11 @@ async fn test_database_connection_struct() -> Result<(), Box<dyn std::error::Err
     info!("✅ 获取连接引用测试成功");
 
     // 测试连接统计信息
-    let stats = db_conn.get_stats();
+    let stats = SeaOrmConnection::new(config).await?.get_stats();
     info!(
         "📊 连接统计: 最大连接数={}, 最小连接数={}",
         stats.max_connections, stats.min_connections
     );
-
-    Ok(())
-}
-
-/// 测试 3: DatabaseManager 测试
-async fn test_database_manager() -> Result<(), Box<dyn std::error::Error>> {
-    info!("🧪 测试 3: DatabaseManager 功能");
-
-    let database_url = build_database_url();
-
-    // 从 URL 创建管理器
-    let manager = DatabaseManager::from_url(&database_url).await?;
-
-    // 测试 ping
-    manager.ping().await?;
-    info!("✅ DatabaseManager ping 测试成功");
-
-    // 测试获取连接引用
-    let conn_ref = manager.get_connection();
-    conn_ref.ping().await?;
-    info!("✅ 获取连接引用测试成功");
 
     Ok(())
 }
@@ -194,7 +171,7 @@ async fn test_error_handling() -> Result<(), Box<dyn std::error::Error>> {
         ..DatabaseConfig::default()
     };
 
-    match DatabaseConnection::new(invalid_config).await {
+    match SeaOrmConnection::new(invalid_config).await {
         Ok(_) => {
             error!("❌ 预期配置验证失败，但成功了");
             return Err("空 URL 配置应该失败".into());
@@ -225,11 +202,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let tests: Vec<(&str, TestFn)> = vec![
         ("基本连接测试", || Box::pin(test_basic_connection())),
-        ("DatabaseConnection 测试", || {
+        ("SeaOrmConnection 测试", || {
             Box::pin(test_database_connection_struct())
-        }),
-        ("DatabaseManager 测试", || {
-            Box::pin(test_database_manager())
         }),
         ("便利函数测试", || {
             Box::pin(test_convenience_functions())

@@ -3,19 +3,19 @@
 //! 提供 SeaORM 数据库连接的封装和扩展功能
 
 use crate::database::{DatabaseConfig, DatabaseError, DatabaseResult};
-use sea_orm::{ConnectOptions, Database, DatabaseConnection as SeaOrmConnection};
+use sea_orm::{ConnectOptions, Database, DatabaseConnection};
 use tracing::{error, info, warn};
 
 /// 数据库连接封装
 #[derive(Debug, Clone)]
-pub struct DatabaseConnection {
+pub struct SeaOrmConnection {
     /// SeaORM 连接实例
-    pub inner: SeaOrmConnection,
+    pub inner: DatabaseConnection,
     /// 配置信息
     config: DatabaseConfig,
 }
 
-impl DatabaseConnection {
+impl SeaOrmConnection {
     /// 创建新的数据库连接
     pub async fn new(config: DatabaseConfig) -> DatabaseResult<Self> {
         // 验证配置
@@ -49,6 +49,16 @@ impl DatabaseConnection {
         })
     }
 
+    /// 从数据库 URL 字符串创建管理器（最常用）
+    pub async fn from_url(database_url: &str) -> DatabaseResult<Self> {
+        info!("从 URL 创建数据库连接: {}", mask_database_url(database_url));
+        let config = DatabaseConfig {
+            url: database_url.to_string(),
+            ..DatabaseConfig::default()
+        };
+        Self::new(config).await
+    }
+
     /// 测试连接是否有效
     pub async fn ping(&self) -> DatabaseResult<()> {
         self.inner.ping().await.map_err(|e| {
@@ -79,6 +89,23 @@ impl DatabaseConnection {
             acquire_timeout: self.config.acquire_timeout_secs,
         }
     }
+
+}
+
+/// 便利函数：从 URL 创建连接（最常用）
+pub async fn create_connection_from_url(
+    database_url: &str,
+) -> DatabaseResult<DatabaseConnection> {
+    let sea_connection = SeaOrmConnection::from_url(database_url).await?;
+    Ok(sea_connection.inner)
+}
+
+/// 便利函数：从配置对象创建连接
+pub async fn create_connection_from_config(
+    config: DatabaseConfig,
+) -> DatabaseResult<DatabaseConnection> {
+    let sea_connection = SeaOrmConnection::new(config).await?;
+    Ok(sea_connection.inner)
 }
 
 /// 连接统计信息
@@ -90,8 +117,16 @@ pub struct ConnectionStats {
     pub acquire_timeout: u64,
 }
 
+/// 数据库健康状态
+#[derive(Debug, Clone)]
+pub struct HealthStatus {
+    pub is_healthy: bool,
+    pub response_time_ms: u64,
+    pub message: String,
+}
+
 /// 屏蔽数据库 URL 中的敏感信息
-fn mask_database_url(url: &str) -> String {
+pub fn mask_database_url(url: &str) -> String {
     // 简单地屏蔽可能的密码部分
     if let Some(at_pos) = url.find('@') {
         if let Some(colon_pos) = url[..at_pos].rfind(':') {
@@ -136,7 +171,7 @@ mod tests {
         let mut config = DatabaseConfig::default();
         config.url = String::new(); // 无效的 URL
 
-        let result = DatabaseConnection::new(config).await;
+        let result = SeaOrmConnection::new(config).await;
         assert!(result.is_err());
         assert!(result.unwrap_err().is_config_error());
     }
