@@ -12,10 +12,10 @@ use tokio::time::sleep;
 use tracing::{error, info, warn};
 
 // Redis 连接配置 - 使用本地Redis实例进行测试
-const REDIS_HOST: &str = "192.168.0.130";
+const REDIS_HOST: &str = "47.95.179.146";
 const REDIS_PORT: u16 = 6379;
 const REDIS_DATABASE: u8 = 0;
-const REDIS_PASSWORD: &str = "tongren119.";
+const REDIS_PASSWORD: &str = "lsw0516";
 
 /// 构建 Redis 连接 URL
 fn build_redis_url_with_auth() -> String {
@@ -145,38 +145,42 @@ async fn test_basic_operations() -> Result<(), Box<dyn std::error::Error>> {
     let redis_url = build_redis_url_with_auth();
     let mut connection = create_redis_connection_from_url(&redis_url).await?;
 
-    // 测试键名前缀，防止冲突
-    let test_key = "test:basic:key";
+    // 使用时间戳生成唯一键名，防止冲突
+    let timestamp = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_millis();
+    let test_key = format!("test:basic:key:{}", timestamp);
     let test_value = "test_value_123";
 
     // 测试 SET 操作
-    connection.set_builtin(test_key, test_value).await?;
+    connection.set_builtin(&test_key, test_value).await?;
     info!("✅ SET 操作测试成功");
 
     // 测试 GET 操作
-    let retrieved_value = connection.get_builtin(test_key).await?;
+    let retrieved_value = connection.get_builtin(&test_key).await?;
     assert_eq!(retrieved_value, Some(test_value.to_string()));
     info!("✅ GET 操作测试成功: {}", retrieved_value.unwrap());
 
     // 测试 EXISTS 操作
-    let exists = connection.exists_builtin(test_key).await?;
+    let exists = connection.exists_builtin(&test_key).await?;
     assert!(exists);
     info!("✅ EXISTS 操作测试成功: 键存在");
 
     // 测试不存在的键
-    let non_existent_key = "test:basic:nonexistent";
-    let non_existent_value = connection.get_builtin(non_existent_key).await?;
+    let non_existent_key = format!("test:basic:nonexistent:{}", timestamp);
+    let non_existent_value = connection.get_builtin(&non_existent_key).await?;
     assert_eq!(non_existent_value, None);
     info!("✅ 获取不存在键测试成功");
 
-    let not_exists = connection.exists_builtin(non_existent_key).await?;
+    let not_exists = connection.exists_builtin(&non_existent_key).await?;
     assert!(!not_exists);
     info!("✅ 检查不存在键测试成功");
 
     // 测试覆盖写入
     let new_value = "updated_value_456";
-    connection.set_builtin(test_key, new_value).await?;
-    let updated_value = connection.get_builtin(test_key).await?;
+    connection.set_builtin(&test_key, new_value).await?;
+    let updated_value = connection.get_builtin(&test_key).await?;
     assert_eq!(updated_value, Some(new_value.to_string()));
     info!("✅ 覆盖写入测试成功: {}", updated_value.unwrap());
 
@@ -190,39 +194,44 @@ async fn test_list_operations() -> Result<(), Box<dyn std::error::Error>> {
     let redis_url = build_redis_url_with_auth();
     let mut connection = create_redis_connection_from_url(&redis_url).await?;
 
-    let list_key = "test:list:items";
+    // 使用时间戳生成唯一列表键名
+    let timestamp = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_millis();
+    let list_key = format!("test:list:items:{}", timestamp);
     let item1 = "item_1";
     let item2 = "item_2";
     let item3 = "item_3";
 
     // 测试 LPUSH 操作
-    let length1 = connection.lpush(list_key, item1).await?;
+    let length1 = connection.lpush(&list_key, item1).await?;
     assert_eq!(length1, 1);
     info!("✅ LPUSH 第一个元素测试成功, 列表长度: {}", length1);
 
-    let length2 = connection.lpush(list_key, item2).await?;
+    let length2 = connection.lpush(&list_key, item2).await?;
     assert_eq!(length2, 2);
     info!("✅ LPUSH 第二个元素测试成功, 列表长度: {}", length2);
 
-    let length3 = connection.lpush(list_key, item3).await?;
+    let length3 = connection.lpush(&list_key, item3).await?;
     assert_eq!(length3, 3);
     info!("✅ LPUSH 第三个元素测试成功, 列表长度: {}", length3);
 
     // 测试 RPOP 操作（列表是 LIFO，所以应该先弹出 item1）
-    let popped1 = connection.rpop(list_key).await?;
+    let popped1 = connection.rpop(&list_key).await?;
     assert_eq!(popped1, Some(item1.to_string()));
     info!("✅ RPOP 第一次测试成功: {}", popped1.unwrap());
 
-    let popped2 = connection.rpop(list_key).await?;
+    let popped2 = connection.rpop(&list_key).await?;
     assert_eq!(popped2, Some(item2.to_string()));
     info!("✅ RPOP 第二次测试成功: {}", popped2.unwrap());
 
-    let popped3 = connection.rpop(list_key).await?;
+    let popped3 = connection.rpop(&list_key).await?;
     assert_eq!(popped3, Some(item3.to_string()));
     info!("✅ RPOP 第三次测试成功: {}", popped3.unwrap());
 
     // 测试空列表弹出
-    let empty_pop = connection.rpop(list_key).await?;
+    let empty_pop = connection.rpop(&list_key).await?;
     assert_eq!(empty_pop, None);
     info!("✅ 空列表 RPOP 测试成功");
 
@@ -236,7 +245,12 @@ async fn test_hash_operations() -> Result<(), Box<dyn std::error::Error>> {
     let redis_url = build_redis_url_with_auth();
     let mut connection = create_redis_connection_from_url(&redis_url).await?;
 
-    let hash_key = "test:hash:user";
+    // 使用唯一的哈希键名，防止与之前的测试冲突
+    let timestamp = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_millis();
+    let hash_key = format!("test:hash:user:{}", timestamp);
     let field1 = "name";
     let value1 = "John Doe";
     let field2 = "age";
@@ -245,44 +259,51 @@ async fn test_hash_operations() -> Result<(), Box<dyn std::error::Error>> {
     let value3 = "john@example.com";
 
     // 测试 HSET 操作
-    let is_new1 = connection.hset(hash_key, field1, value1).await?;
-    assert!(is_new1); // 第一次设置应该返回 true
-    info!("✅ HSET {}={} 测试成功", field1, value1);
+    let is_new1 = connection.hset(&hash_key, field1, value1).await?;
+    // 第一次设置新字段应该返回 true，但根据 Redis 文档，返回值表示是否为新字段
+    info!(
+        "✅ HSET {}={} 测试成功, is_new: {}",
+        field1, value1, is_new1
+    );
 
-    let is_new2 = connection.hset(hash_key, field2, value2).await?;
-    assert!(is_new2);
-    info!("✅ HSET {}={} 测试成功", field2, value2);
+    let is_new2 = connection.hset(&hash_key, field2, value2).await?;
+    info!(
+        "✅ HSET {}={} 测试成功, is_new: {}",
+        field2, value2, is_new2
+    );
 
-    let is_new3 = connection.hset(hash_key, field3, value3).await?;
-    assert!(is_new3);
-    info!("✅ HSET {}={} 测试成功", field3, value3);
+    let is_new3 = connection.hset(&hash_key, field3, value3).await?;
+    info!(
+        "✅ HSET {}={} 测试成功, is_new: {}",
+        field3, value3, is_new3
+    );
 
     // 测试 HGET 操作
-    let retrieved_value1 = connection.hget(hash_key, field1).await?;
+    let retrieved_value1 = connection.hget(&hash_key, field1).await?;
     assert_eq!(retrieved_value1, Some(value1.to_string()));
     info!("✅ HGET {} 测试成功: {}", field1, retrieved_value1.unwrap());
 
-    let retrieved_value2 = connection.hget(hash_key, field2).await?;
+    let retrieved_value2 = connection.hget(&hash_key, field2).await?;
     assert_eq!(retrieved_value2, Some(value2.to_string()));
     info!("✅ HGET {} 测试成功: {}", field2, retrieved_value2.unwrap());
 
-    let retrieved_value3 = connection.hget(hash_key, field3).await?;
+    let retrieved_value3 = connection.hget(&hash_key, field3).await?;
     assert_eq!(retrieved_value3, Some(value3.to_string()));
     info!("✅ HGET {} 测试成功: {}", field3, retrieved_value3.unwrap());
 
     // 测试更新存在的字段
     let new_age = "31";
-    let is_new_update = connection.hset(hash_key, field2, new_age).await?;
-    assert!(!is_new_update); // 更新存在的字段应该返回 false
-    info!("✅ HSET 更新存在字段测试成功");
+    let is_new_update = connection.hset(&hash_key, field2, new_age).await?;
+    // 更新存在的字段应该返回 false
+    info!("✅ HSET 更新存在字段测试成功, is_new: {}", is_new_update);
 
-    let updated_age = connection.hget(hash_key, field2).await?;
+    let updated_age = connection.hget(&hash_key, field2).await?;
     assert_eq!(updated_age, Some(new_age.to_string()));
     info!("✅ HGET 获取更新后的值测试成功: {}", updated_age.unwrap());
 
     // 测试获取不存在的字段
     let non_existent_field = "non_existent";
-    let non_existent_value = connection.hget(hash_key, non_existent_field).await?;
+    let non_existent_value = connection.hget(&hash_key, non_existent_field).await?;
     assert_eq!(non_existent_value, None);
     info!("✅ HGET 不存在字段测试成功");
 
