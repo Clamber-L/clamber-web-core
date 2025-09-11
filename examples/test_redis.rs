@@ -45,17 +45,6 @@ async fn test_redis_connection_struct() -> Result<(), Box<dyn std::error::Error>
 
     let config = RedisConfig {
         url: build_redis_url_with_auth(),
-        max_connections: 10,
-        min_connections: 2,
-        connect_timeout_secs: 10,
-        read_timeout_secs: 30,
-        write_timeout_secs: 30,
-        retry_attempts: 3,
-        retry_delay_ms: 100,
-        default_ttl_secs: 3600,
-        command_logging: true,
-        slow_threshold_ms: 100,
-        enable_pool: true,
         database_index: 0,
     };
 
@@ -64,13 +53,6 @@ async fn test_redis_connection_struct() -> Result<(), Box<dyn std::error::Error>
     // 测试 ping
     redis_conn.ping().await?;
     info!("✅ RedisConnection ping 测试成功");
-
-    // 测试连接统计信息
-    let stats = redis_conn.get_stats();
-    info!(
-        "📊 连接统计: 最大连接数={}, 最小连接数={}, 连接超时={}秒",
-        stats.max_connections, stats.min_connections, stats.connect_timeout
-    );
 
     // 测试便利函数
     let mut conn2 = create_redis_connection_from_config(config).await?;
@@ -84,12 +66,6 @@ async fn test_redis_connection_struct() -> Result<(), Box<dyn std::error::Error>
 async fn test_redis_config() -> Result<(), Box<dyn std::error::Error>> {
     info!("🧪 测试 3: Redis 配置功能");
 
-    // 测试默认配置
-    let default_config = RedisConfig::default();
-    assert_eq!(default_config.max_connections, 50);
-    assert_eq!(default_config.min_connections, 5);
-    info!("✅ 默认配置测试成功");
-
     // 测试从 URL 创建配置
     let url_config = RedisConfig::from_url(build_redis_url_with_auth());
     assert_eq!(url_config.url, build_redis_url_with_auth());
@@ -100,12 +76,6 @@ async fn test_redis_config() -> Result<(), Box<dyn std::error::Error>> {
     invalid_config.url = String::new();
     assert!(invalid_config.validate().is_err());
     info!("✅ 配置验证测试成功");
-
-    // 测试时间转换功能
-    let config = RedisConfig::default();
-    assert_eq!(config.connect_timeout(), Duration::from_secs(10));
-    assert_eq!(config.slow_threshold(), Duration::from_millis(100));
-    info!("✅ 时间转换功能测试成功");
 
     // 测试 URL 构建
     let mut config = RedisConfig::from_url("redis://localhost:6379");
@@ -343,47 +313,7 @@ async fn test_error_handling() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    // 测试配置验证错误
-    let mut bad_config = RedisConfig::default();
-    bad_config.min_connections = 10;
-    bad_config.max_connections = 5; // min > max
-
-    match bad_config.validate() {
-        Ok(_) => {
-            error!("❌ 预期配置验证失败，但成功了");
-            return Err("无效连接数配置应该失败".into());
-        }
-        Err(e) => {
-            info!("✅ 正确处理了配置验证错误: {}", e);
-        }
-    }
-
     info!("✅ 错误处理测试完成");
-    Ok(())
-}
-
-/// 测试 9: 超时和慢命令测试
-async fn test_timeout_and_slow_commands() -> Result<(), Box<dyn std::error::Error>> {
-    info!("🧪 测试 9: 超时和慢命令检测");
-
-    // 创建一个具有低慢命令阈值的配置
-    let mut config = RedisConfig::from_url(build_redis_url_with_auth());
-    config.slow_threshold_ms = 1; // 设置为 1ms，对于大部分命令都会被认为是慢命令
-    config.command_logging = true;
-
-    let mut connection = RedisConnection::new(config).await?;
-
-    // 执行一些操作，应该会触发慢命令日志
-    let test_key = "test:slow:key";
-    let test_value = "test_slow_value";
-
-    info!("🐌 执行操作，预期会触发慢命令警告...");
-
-    connection.set_builtin(test_key, test_value).await?;
-    connection.get_builtin(test_key).await?;
-    connection.exists_builtin(test_key).await?;
-
-    info!("✅ 慢命令检测测试完成（请检查上面的警告日志）");
     Ok(())
 }
 
@@ -592,17 +522,6 @@ async fn test_health_check() -> Result<(), Box<dyn std::error::Error>> {
         // 稍微延迟再次检查
         sleep(Duration::from_millis(100)).await;
     }
-
-    // 测试连接统计信息
-    let stats = connection.get_stats();
-    info!("📊 连接统计信息:");
-    info!("  - 最大连接数: {}", stats.max_connections);
-    info!("  - 最小连接数: {}", stats.min_connections);
-    info!("  - 连接超时: {}秒", stats.connect_timeout);
-    info!("  - 读取超时: {}秒", stats.read_timeout);
-    info!("  - 写入超时: {}秒", stats.write_timeout);
-
-    info!("✅ 健康检查测试完成");
     Ok(())
 }
 
@@ -650,9 +569,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             Box::pin(test_hash_operations())
         }),
         ("错误处理测试", || Box::pin(test_error_handling())),
-        ("超时和慢命令测试", || {
-            Box::pin(test_timeout_and_slow_commands())
-        }),
         ("连接性能测试", || {
             Box::pin(test_connection_performance())
         }),

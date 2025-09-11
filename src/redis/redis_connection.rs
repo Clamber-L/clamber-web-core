@@ -12,8 +12,6 @@ use tracing::{error, info, warn};
 pub struct RedisConnection {
     /// Redis 连接管理器
     manager: ConnectionManager,
-    /// 配置信息
-    config: RedisConfig,
 }
 
 impl RedisConnection {
@@ -38,7 +36,7 @@ impl RedisConnection {
 
         info!("Redis 连接成功建立");
 
-        Ok(Self { manager, config })
+        Ok(Self { manager })
     }
 
     /// 从 Redis URL 字符串创建连接（最常用）
@@ -75,13 +73,8 @@ impl RedisConnection {
         K: ToRedisArgs + Send + Sync,
         V: ToRedisArgs + Send + Sync,
     {
-        let start = Instant::now();
-
         // 使用 AsyncCommands trait 的内置 set 方法
-        let result = self.manager.set(key, value).await.map_err(RedisError::from);
-
-        self.log_command_if_slow("SET_BUILTIN", start);
-        result
+        self.manager.set(key, value).await.map_err(RedisError::from)
     }
 
     /// 获取键的值 - 使用内置方法
@@ -89,13 +82,8 @@ impl RedisConnection {
     where
         K: ToRedisArgs + Send + Sync,
     {
-        let start = Instant::now();
-
         // 使用 AsyncCommands trait 的内置 get 方法
-        let result = self.manager.get(key).await.map_err(RedisError::from);
-
-        self.log_command_if_slow("GET_BUILTIN", start);
-        result
+        self.manager.get(key).await.map_err(RedisError::from)
     }
 
     /// 检查键是否存在 - 使用内置方法
@@ -103,13 +91,8 @@ impl RedisConnection {
     where
         K: ToRedisArgs + Send + Sync,
     {
-        let start = Instant::now();
-
         // 使用 AsyncCommands trait 的内置 exists 方法
-        let result = self.manager.exists(key).await.map_err(RedisError::from);
-
-        self.log_command_if_slow("EXISTS_BUILTIN", start);
-        result
+        self.manager.exists(key).await.map_err(RedisError::from)
     }
 
     /// 列表操作：左侧推入
@@ -118,14 +101,10 @@ impl RedisConnection {
         K: ToRedisArgs + Send + Sync,
         V: ToRedisArgs + Send + Sync,
     {
-        let start = Instant::now();
-        let result = self
-            .manager
+        self.manager
             .lpush(key, value)
             .await
-            .map_err(RedisError::from);
-        self.log_command_if_slow("LPUSH", start);
-        result
+            .map_err(RedisError::from)
     }
 
     /// 列表操作：右侧弹出
@@ -133,10 +112,7 @@ impl RedisConnection {
     where
         K: ToRedisArgs + Send + Sync,
     {
-        let start = Instant::now();
-        let result = self.manager.rpop(key, None).await.map_err(RedisError::from);
-        self.log_command_if_slow("RPOP", start);
-        result
+        self.manager.rpop(key, None).await.map_err(RedisError::from)
     }
 
     /// 哈希操作：设置字段
@@ -146,14 +122,10 @@ impl RedisConnection {
         F: ToRedisArgs + Send + Sync,
         V: ToRedisArgs + Send + Sync,
     {
-        let start = Instant::now();
-        let result = self
-            .manager
+        self.manager
             .hset(key, field, value)
             .await
-            .map_err(RedisError::from);
-        self.log_command_if_slow("HSET", start);
-        result
+            .map_err(RedisError::from)
     }
 
     /// 哈希操作：获取字段
@@ -162,37 +134,10 @@ impl RedisConnection {
         K: ToRedisArgs + Send + Sync,
         F: ToRedisArgs + Send + Sync,
     {
-        let start = Instant::now();
-        let result = self
-            .manager
+        self.manager
             .hget(key, field)
             .await
-            .map_err(RedisError::from);
-        self.log_command_if_slow("HGET", start);
-        result
-    }
-
-    /// 获取连接统计信息
-    pub fn get_stats(&self) -> RedisConnectionStats {
-        RedisConnectionStats {
-            max_connections: self.config.max_connections,
-            min_connections: self.config.min_connections,
-            connect_timeout: self.config.connect_timeout_secs,
-            read_timeout: self.config.read_timeout_secs,
-            write_timeout: self.config.write_timeout_secs,
-        }
-    }
-
-    /// 记录慢命令日志
-    fn log_command_if_slow(&self, command: &str, start: Instant) {
-        if !self.config.command_logging {
-            return;
-        }
-
-        let elapsed = start.elapsed();
-        if elapsed > self.config.slow_threshold() {
-            warn!("慢 Redis 命令: {} 耗时 {:?}", command, elapsed);
-        }
+            .map_err(RedisError::from)
     }
 }
 
@@ -251,20 +196,5 @@ mod tests {
         let masked = mask_redis_url(url);
         assert!(masked.contains("***"));
         assert!(!masked.contains("password"));
-    }
-
-    #[test]
-    fn test_connection_stats() {
-        let config = RedisConfig::default();
-        let stats = RedisConnectionStats {
-            max_connections: config.max_connections,
-            min_connections: config.min_connections,
-            connect_timeout: config.connect_timeout_secs,
-            read_timeout: config.read_timeout_secs,
-            write_timeout: config.write_timeout_secs,
-        };
-
-        assert_eq!(stats.max_connections, 50);
-        assert_eq!(stats.min_connections, 5);
     }
 }
