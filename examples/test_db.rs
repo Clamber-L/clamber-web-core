@@ -8,11 +8,11 @@ use tokio::time::Instant;
 use tracing::{error, info, warn};
 
 // 数据库连接配置
-const DB_HOST: &str = "rm-m5e0b22v8or3fg89dvo.mysql.rds.aliyuncs.com";
-const DB_USERNAME: &str = "tr_admin";
-const DB_PASSWORD: &str = "mysql!Tr^zhidui+119";
+const DB_HOST: &str = "127.0.0.1";
+const DB_USERNAME: &str = "root";
+const DB_PASSWORD: &str = "lsw0516";
 const DB_PORT: u16 = 3306;
-const DB_NAME: &str = "test"; // 默认数据库名，可以根据实际情况修改
+const DB_NAME: &str = "clamber"; // 默认数据库名，可以根据实际情况修改
 
 /// 构建数据库连接 URL
 fn build_database_url() -> String {

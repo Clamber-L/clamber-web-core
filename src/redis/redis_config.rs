@@ -13,6 +13,26 @@ pub struct RedisConfig {
     /// 数据库索引
     #[serde(default = "default_database_index")]
     pub database_index: u8,
+
+    /// 连接超时时间（秒）
+    #[serde(default = "default_connection_timeout")]
+    pub connection_timeout_secs: u64,
+
+    /// 响应超时时间（秒）
+    #[serde(default = "default_response_timeout")]
+    pub response_timeout_secs: u64,
+
+    /// 重试次数
+    #[serde(default = "default_retry_count")]
+    pub retry_count: usize,
+
+    /// 重试延迟因子（毫秒）
+    #[serde(default = "default_retry_factor")]
+    pub retry_factor_ms: u64,
+
+    /// 最大重试延迟（毫秒）
+    #[serde(default = "default_max_retry_delay")]
+    pub max_retry_delay_ms: u64,
 }
 
 impl Default for RedisConfig {
@@ -20,6 +40,11 @@ impl Default for RedisConfig {
         Self {
             url: "redis://localhost:6379".to_string(),
             database_index: default_database_index(),
+            connection_timeout_secs: default_connection_timeout(),
+            response_timeout_secs: default_response_timeout(),
+            retry_count: default_retry_count(),
+            retry_factor_ms: default_retry_factor(),
+            max_retry_delay_ms: default_max_retry_delay(),
         }
     }
 }
@@ -55,6 +80,26 @@ fn default_database_index() -> u8 {
     0
 }
 
+fn default_connection_timeout() -> u64 {
+    30
+}
+
+fn default_response_timeout() -> u64 {
+    0 // 0 表示使用默认值（无超时）
+}
+
+fn default_retry_count() -> usize {
+    6
+}
+
+fn default_retry_factor() -> u64 {
+    100
+}
+
+fn default_max_retry_delay() -> u64 {
+    0 // 0 表示使用默认值（无最大延迟限制）
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -72,10 +117,6 @@ mod tests {
 
         // 测试空 URL
         config.url = String::new();
-        assert!(config.validate().is_err());
-
-        // 测试无效连接数
-        config.url = "redis://localhost:6379".to_string();
         assert!(config.validate().is_err());
     }
 

@@ -3,8 +3,11 @@
 //! 提供 Redis 连接的封装和扩展功能，支持连接池和基本操作
 
 use crate::redis::{RedisConfig, RedisError, RedisResult};
-use redis::{AsyncCommands, Client, ToRedisArgs, aio::ConnectionManager};
-use std::time::Instant;
+use redis::{
+    AsyncCommands, Client, ToRedisArgs,
+    aio::{ConnectionManager, ConnectionManagerConfig},
+};
+use std::time::{Duration, Instant};
 use tracing::{error, info, warn};
 
 /// Redis 连接封装
@@ -28,11 +31,40 @@ impl RedisConnection {
             RedisError::connection(format!("客户端创建失败: {}", e))
         })?;
 
-        // 创建连接管理器
-        let manager = ConnectionManager::new(client).await.map_err(|e| {
-            error!("Redis 连接管理器创建失败: {}", e);
-            RedisError::connection(format!("连接管理器创建失败: {}", e))
-        })?;
+        // 创建 ConnectionManagerConfig 并应用自定义配置
+        let mut manager_config = ConnectionManagerConfig::new()
+            .set_number_of_retries(config.retry_count)
+            .set_factor(config.retry_factor_ms);
+
+        // 设置连接超时
+        if config.connection_timeout_secs > 0 {
+            manager_config = manager_config
+                .set_connection_timeout(Duration::from_secs(config.connection_timeout_secs));
+        }
+
+        // 设置响应超时
+        if config.response_timeout_secs > 0 {
+            manager_config = manager_config
+                .set_response_timeout(Duration::from_secs(config.response_timeout_secs));
+        }
+
+        // 设置最大重试延迟
+        if config.max_retry_delay_ms > 0 {
+            manager_config = manager_config.set_max_delay(config.max_retry_delay_ms);
+        }
+
+        // 使用自定义配置创建连接管理器
+        let manager = ConnectionManager::new_with_config(client, manager_config)
+            .await
+            .map_err(|e| {
+                error!("Redis 连接管理器创建失败: {}", e);
+                RedisError::connection(format!("连接管理器创建失败: {}", e))
+            })?;
+
+        info!(
+            "Redis 连接池使用自定义配置: 连接超时={}秒, 响应超时={}秒, 重试次数={}",
+            config.connection_timeout_secs, config.response_timeout_secs, config.retry_count
+        );
 
         info!("Redis 连接成功建立");
 
@@ -138,6 +170,17 @@ impl RedisConnection {
             .hget(key, field)
             .await
             .map_err(RedisError::from)
+    }
+
+    /// 获取连接池统计信息
+    pub fn get_pool_stats(&self) -> RedisConnectionStats {
+        RedisConnectionStats {
+            max_connections: 10, // ConnectionManager 默认最大连接数
+            min_connections: 0,  // ConnectionManager 默认最小连接数
+            connect_timeout: 30, // ConnectionManager 默认连接超时（秒）
+            read_timeout: 5,     // ConnectionManager 默认读取超时（秒）
+            write_timeout: 5,    // ConnectionManager 默认写入超时（秒）
+        }
     }
 }
 

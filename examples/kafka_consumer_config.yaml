@@ -1,0 +1,38 @@
+# Kafka 消费者配置示例
+
+base:
+  bootstrap_servers:
+    - "localhost:9092"
+    - "localhost:9093"
+    - "localhost:9094"
+  client_id: "example-consumer"
+  security_protocol: "PLAINTEXT"
+  sasl_mechanism: null
+  sasl_username: null
+  sasl_password: null
+  ssl_ca_location: null
+  ssl_certificate_location: null
+  ssl_key_location: null
+  connection_timeout_ms: 30000
+  request_timeout_ms: 30000
+  custom_configs:
+    # 自定义配置参数
+    metadata.max.age.ms: "300000"
+    reconnect.backoff.ms: "50"
+    reconnect.backoff.max.ms: "1000"
+
+# 消费者特定配置
+group_id: "example-consumer-group"
+enable_auto_commit: true
+auto_commit_interval_ms: 5000
+session_timeout_ms: 30000
+heartbeat_interval_ms: 3000
+max_poll_interval_ms: 300000
+max_poll_records: 500
+partition_assignment_strategy: "range"  # range, roundrobin, sticky
+auto_offset_reset: "latest"  # earliest, latest, none
+fetch_min_bytes: 1
+fetch_max_bytes: 52428800
+fetch_max_wait_ms: 500
+max_partition_fetch_bytes: 1048576
+isolation_level: "read_uncommitted"  # read_uncommitted, read_committed

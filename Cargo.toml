@@ -10,8 +10,15 @@ homepage = "https://github.com/Clamber-L/clamber-web-core"
 documentation = "https://docs.rs/clamber-web-core"
 readme = "README.md"
 
+[features]
+default = ["database", "redis", "kafka"]
+database = ["dep:sea-orm", "dep:clamber-core"]
+redis = ["dep:redis", "dep:clamber-core"]
+kafka = ["dep:rdkafka"]
+full = ["database", "redis", "kafka"]
+
 [dependencies]
-clamber-core = "0.1.6"
+# Core dependencies (always included)
 axum = { version = "0.8.1", features = [
     "http2",
     "query",
@@ -29,15 +36,18 @@ serde = { version = "1.0.215", features = ["derive"] }
 serde_yaml = "0.9.33"
 serde_json = "1.0.133"
 
-# orm
+# Optional dependencies
+clamber-core = { version = "0.1.6", optional = true }
 sea-orm = { version = "1.1.1", features = [
     "sqlx-mysql",
     "runtime-tokio-rustls",
     "macros",
-] }
-
-# redis
-redis = { version = "0.32.5", features = ["tokio-comp", "connection-manager"] }
+], optional = true }
+redis = { version = "0.32.5", features = [
+    "tokio-comp",
+    "connection-manager",
+], optional = true }
+rdkafka = { version = "0.36.2", features = ["cmake-build"], optional = true }
 
 # error handling
 thiserror = "2.0"

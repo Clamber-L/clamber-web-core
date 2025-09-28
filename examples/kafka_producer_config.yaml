@@ -1,0 +1,36 @@
+# Kafka 生产者配置示例
+
+base:
+  bootstrap_servers:
+    - "localhost:9092"
+    - "localhost:9093"
+    - "localhost:9094"
+  client_id: "example-producer"
+  security_protocol: "PLAINTEXT"
+  sasl_mechanism: null
+  sasl_username: null
+  sasl_password: null
+  ssl_ca_location: null
+  ssl_certificate_location: null
+  ssl_key_location: null
+  connection_timeout_ms: 30000
+  request_timeout_ms: 30000
+  custom_configs:
+    # 自定义配置参数
+    metadata.max.age.ms: "300000"
+    reconnect.backoff.ms: "50"
+    reconnect.backoff.max.ms: "1000"
+
+# 生产者特定配置
+acks: "1"  # 0: 不等待, 1: 等待leader确认, -1: 等待所有副本确认
+retries: 3
+retry_backoff_ms: 100
+batch_size: 16384
+linger_ms: 0
+compression_type: "none"  # none, gzip, snappy, lz4, zstd
+max_request_size: 1048576
+send_buffer_bytes: 131072
+receive_buffer_bytes: 32768
+enable_idempotence: false
+transactional_id: null
+transaction_timeout_ms: 60000

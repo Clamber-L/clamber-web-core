@@ -12,10 +12,10 @@ use tokio::time::sleep;
 use tracing::{error, info, warn};
 
 // Redis 连接配置 - 使用本地Redis实例进行测试
-const REDIS_HOST: &str = "47.95.179.146";
+const REDIS_HOST: &str = "127.0.0.1";
 const REDIS_PORT: u16 = 6379;
 const REDIS_DATABASE: u8 = 0;
-const REDIS_PASSWORD: &str = "lsw0516";
+const REDIS_PASSWORD: &str = "";
 
 /// 构建 Redis 连接 URL
 fn build_redis_url_with_auth() -> String {
@@ -46,6 +46,11 @@ async fn test_redis_connection_struct() -> Result<(), Box<dyn std::error::Error>
     let config = RedisConfig {
         url: build_redis_url_with_auth(),
         database_index: 0,
+        connection_timeout_secs: 5,
+        response_timeout_secs: 5,
+        retry_count: 5,
+        retry_factor_ms: 5,
+        max_retry_delay_ms: 5,
     };
 
     let mut redis_conn = RedisConnection::new(config.clone()).await?;
