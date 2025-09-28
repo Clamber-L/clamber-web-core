@@ -11,11 +11,12 @@ documentation = "https://docs.rs/clamber-web-core"
 readme = "README.md"
 
 [features]
-default = ["database", "redis", "kafka"]
+default = ["database", "redis", "kafka", "proxy"]
 database = ["dep:sea-orm", "dep:clamber-core"]
 redis = ["dep:redis", "dep:clamber-core"]
 kafka = ["dep:rdkafka"]
-full = ["database", "redis", "kafka"]
+proxy = ["dep:pingora", "dep:async-trait"]
+full = ["database", "redis", "kafka", "proxy"]
 
 [dependencies]
 # Core dependencies (always included)
@@ -64,3 +65,10 @@ argon2 = "0.5.3"
 # logging
 tracing = "0.1"
 tracing-subscriber = "0.3"
+
+# proxy
+async-trait = { version = "0.1.88", optional = true }
+pingora = { version = "0.6.0", features = ["lb", "openssl"], optional = true }
+
+[patch.crates-io]
+sfv = { git = "https://github.com/undef1nd/sfv.git", tag = "v0.9.4" }

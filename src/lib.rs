@@ -33,6 +33,9 @@ pub mod redis;
 #[cfg(feature = "kafka")]
 pub mod kafka;
 
+#[cfg(feature = "proxy")]
+pub mod proxy;
+
 // 重新导出主要模块
 #[cfg(feature = "database")]
 pub use database::*;
@@ -42,6 +45,9 @@ pub use redis::*;
 
 #[cfg(feature = "kafka")]
 pub use kafka::*;
+
+#[cfg(feature = "proxy")]
+pub use proxy::*;
 
 // 重新导出核心依赖
 pub use axum;
@@ -61,3 +67,6 @@ pub use redis as redis_crate;
 
 #[cfg(feature = "kafka")]
 pub use rdkafka;
+
+#[cfg(feature = "proxy")]
+pub use pingora;
