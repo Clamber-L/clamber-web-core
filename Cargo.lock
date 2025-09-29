@@ -582,6 +582,7 @@ dependencies = [
  "axum-extra",
  "chrono",
  "clamber-core",
+ "http",
  "pingora",
  "rdkafka",
  "redis",

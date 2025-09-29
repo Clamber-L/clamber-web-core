@@ -128,24 +128,26 @@ impl ProxyHttp for SimpleProxyService {
             match location.location_type {
                 LocationType::Proxy => {
                     // 修改请求路径，移除 location 前缀
-                    if let Some(proxy_pass) = &location.proxy_pass {
-                        if let Some(upstream_config) = self.get_upstream_config(proxy_pass) {
-                            if let Some(server) = self.select_upstream_server(upstream_config) {
-                                // 修改请求路径，移除 location 前缀
-                                let new_path = if path.len() > location.path.len() {
-                                    &path[location.path.len()..]
-                                } else {
-                                    "/"
-                                };
+                    if let Some(_proxy_pass) = &location.proxy_pass {
+                        // 移除 location 前缀
+                        let new_path = path.strip_prefix(&location.path).unwrap_or(path);
 
-                                // 解析服务器地址
-                                let server_parts: Vec<&str> = server.split(':').collect();
-                                let host = server_parts[0];
-                                let port = server_parts.get(1).unwrap_or(&"80");
+                        // 保留原始请求的查询字符串
+                        let new_path_and_query = if let Some(query) = session.req_header().uri.query() {
+                            format!("/{}?{}", new_path, query)
+                        } else {
+                            format!("/{}", new_path)
+                        };
 
-                                // 构建新的 URI
-                                let new_uri = format!("http://{}:{}{}", host, port, new_path);
-                                println!("Proxying to: {}", new_uri);
+                        // 解析为 PathAndQuery
+                        if let Ok(path_and_query) = new_path_and_query.parse() {
+                            // 获取当前 URI 的 parts
+                            let mut parts = upstream_request.uri.clone().into_parts();
+                            // 替换 path_and_query
+                            parts.path_and_query = Some(path_and_query);
+                            // 从 parts 构建新的 URI
+                            if let Ok(new_uri) = http::Uri::from_parts(parts) {
+                                upstream_request.set_uri(new_uri);
                             }
                         }
                     }
