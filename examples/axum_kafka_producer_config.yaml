@@ -1,0 +1,20 @@
+# Axum Kafka 生产者配置示例
+
+base:
+  bootstrap_servers:
+    - "localhost:9092"
+  client_id: "axum-producer"
+  security_protocol: "PLAINTEXT"
+  connection_timeout_ms: 30000
+  request_timeout_ms: 30000
+
+# 生产者特定配置
+acks: "1"  # 等待leader确认
+retries: 3
+retry_backoff_ms: 100
+batch_size: 16384
+linger_ms: 0
+compression_type: "none"
+enable_idempotence: false
+transactional_id: null
+transaction_timeout_ms: 60000

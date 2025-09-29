@@ -1,0 +1,60 @@
+warning: Patch `sfv v0.9.4 (https://github.com/undef1nd/sfv.git?tag=v0.9.4#e6499d8c)` was not used in the crate graph.
+Check that the patched package version and available features are compatible
+with the dependency requirements. If the patch has a different version from
+what is locked in the Cargo.lock file, run `cargo update` to use the new
+version. This may also occur with an optional dependency that is not enabled.
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+warning: unused imports: `ResponseHeader` and `StatusCode`
+ --> src\proxy\enhanced_proxy_service.rs:9:36
+  |
+9 | use pingora::http::{RequestHeader, ResponseHeader, StatusCode};
+  |                                    ^^^^^^^^^^^^^^  ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: field `config` is never read
+   --> src\kafka\kafka_consumer.rs:182:5
+    |
+180 | pub struct AdvancedKafkaConsumer {
+    |            --------------------- field in this struct
+181 |     consumer: StreamConsumer,
+182 |     config: KafkaConsumerConfig,
+    |     ^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: field `config` is never read
+   --> src\kafka\kafka_consumer.rs:248:5
+    |
+246 | pub struct ConsumerGroupManager {
+    |            -------------------- field in this struct
+247 |     consumers: Vec<KafkaConsumer>,
+248 |     config: KafkaConsumerConfig,
+    |     ^^^^^^
+
+warning: field `static_services` is never read
+  --> src\proxy\enhanced_proxy_service.rs:19:5
+   |
+17 | pub struct EnhancedProxyService {
+   |            -------------------- field in this struct
+18 |     config: Arc<ProxyConfig>,
+19 |     static_services: HashMap<String, StaticFileService>,
+   |     ^^^^^^^^^^^^^^^
+
+warning: method `guess_content_type` is never used
+  --> src\proxy\static_file_service.rs:70:8
+   |
+15 | impl StaticFileService {
+   | ---------------------- method in this implementation
+...
+70 |     fn guess_content_type(&self, path: &Path) -> &'static str {
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: `clamber-web-core` (lib) generated 5 warnings (run `cargo fix --lib -p clamber-web-core` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.61s
+     Running `E:\project\rust\clamber-web-core\target\debug\examples\axum_kafka_config_example.exe`
+启动 Axum + Kafka 配置文件示例应用...
+Error: ConfigError("读取生产者配置文件失败: 系统找不到指定的路径。 (os error 3)")
+error: process didn't exit successfully: `E:\project\rust\clamber-web-core\target\debug\examples\axum_kafka_config_example.exe` (exit code: 1)

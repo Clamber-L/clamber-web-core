@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kafka API 代理服务器</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .api-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .api-section h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .endpoint {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-left: 4px solid #3498db;
+            border-radius: 3px;
+        }
+        .method {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .get { background-color: #27ae60; color: white; }
+        .post { background-color: #e74c3c; color: white; }
+        .path {
+            font-family: monospace;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .description {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        .test-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        .test-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 3px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Kafka API 代理服务器</h1>
+        
+        <div class="api-section">
+            <h2>📡 Kafka API 端点</h2>
+            <p>以下端点将转发到 Kafka Example API (端口 3000):</p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/kafka/</span>
+                <div class="description">Kafka API 根路径</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/kafka/health</span>
+                <div class="description">健康检查</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/api/kafka/send-message</span>
+                <div class="description">发送消息</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/api/kafka/send-user-message</span>
+                <div class="description">发送用户消息</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/kafka/producer-stats</span>
+                <div class="description">获取生产者统计</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/kafka/consumer-stats</span>
+                <div class="description">获取消费者统计</div>
+            </div>
+        </div>
+
+        <div class="api-section">
+            <h2>⚙️ 配置 API 端点</h2>
+            <p>以下端点将转发到 Kafka Config Example API (端口 3001):</p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/config/</span>
+                <div class="description">配置 API 根路径</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/config/health</span>
+                <div class="description">健康检查</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/api/config/send-message</span>
+                <div class="description">发送消息</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 API 测试</h2>
+            <p>点击下面的按钮测试 API 端点:</p>
+            
+            <button class="test-button" onclick="testHealth()">测试健康检查</button>
+            <button class="test-button" onclick="testSendMessage()">测试发送消息</button>
+            <button class="test-button" onclick="testProducerStats()">测试生产者统计</button>
+            <button class="test-button" onclick="testConfigHealth()">测试配置健康检查</button>
+            
+            <div id="result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        function showResult(data) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function testHealth() {
+            try {
+                const response = await fetch('/api/kafka/health');
+                const data = await response.json();
+                showResult(data);
+            } catch (error) {
+                showResult({ error: error.message });
+            }
+        }
+
+        async function testSendMessage() {
+            try {
+                const response = await fetch('/api/kafka/send-message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        topic: 'test-topic',
+                        key: 'test-key',
+                        message: 'Hello from proxy!'
+                    })
+                });
+                const data = await response.json();
+                showResult(data);
+            } catch (error) {
+                showResult({ error: error.message });
+            }
+        }
+
+        async function testProducerStats() {
+            try {
+                const response = await fetch('/api/kafka/producer-stats');
+                const data = await response.json();
+                showResult(data);
+            } catch (error) {
+                showResult({ error: error.message });
+            }
+        }
+
+        async function testConfigHealth() {
+            try {
+                const response = await fetch('/api/config/health');
+                const data = await response.json();
+                showResult(data);
+            } catch (error) {
+                showResult({ error: error.message });
+            }
+        }
+    </script>
+</body>
+</html>

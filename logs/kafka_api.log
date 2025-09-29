@@ -1,0 +1,284 @@
+    Blocking waiting for file lock on package cache
+warning: Patch `sfv v0.9.4 (https://github.com/undef1nd/sfv.git?tag=v0.9.4#e6499d8c)` was not used in the crate graph.
+Check that the patched package version and available features are compatible
+with the dependency requirements. If the patch has a different version from
+what is locked in the Cargo.lock file, run `cargo update` to use the new
+version. This may also occur with an optional dependency that is not enabled.
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+warning: unused imports: `ResponseHeader` and `StatusCode`
+ --> src\proxy\enhanced_proxy_service.rs:9:36
+  |
+9 | use pingora::http::{RequestHeader, ResponseHeader, StatusCode};
+  |                                    ^^^^^^^^^^^^^^  ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: field `config` is never read
+   --> src\kafka\kafka_consumer.rs:182:5
+    |
+180 | pub struct AdvancedKafkaConsumer {
+    |            --------------------- field in this struct
+181 |     consumer: StreamConsumer,
+182 |     config: KafkaConsumerConfig,
+    |     ^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: field `config` is never read
+   --> src\kafka\kafka_consumer.rs:248:5
+    |
+246 | pub struct ConsumerGroupManager {
+    |            -------------------- field in this struct
+247 |     consumers: Vec<KafkaConsumer>,
+248 |     config: KafkaConsumerConfig,
+    |     ^^^^^^
+
+warning: field `static_services` is never read
+  --> src\proxy\enhanced_proxy_service.rs:19:5
+   |
+17 | pub struct EnhancedProxyService {
+   |            -------------------- field in this struct
+18 |     config: Arc<ProxyConfig>,
+19 |     static_services: HashMap<String, StaticFileService>,
+   |     ^^^^^^^^^^^^^^^
+
+warning: method `guess_content_type` is never used
+  --> src\proxy\static_file_service.rs:70:8
+   |
+15 | impl StaticFileService {
+   | ---------------------- method in this implementation
+...
+70 |     fn guess_content_type(&self, path: &Path) -> &'static str {
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: `clamber-web-core` (lib) generated 5 warnings (run `cargo fix --lib -p clamber-web-core` to apply 1 suggestion)
+   Compiling clamber-web-core v0.1.2 (E:\project\rust\clamber-web-core)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 17.27s
+     Running `target\debug\examples\axum_kafka_example.exe`
+启动 Axum + Kafka 示例应用...
+%4|1759110232.650|CONFWARN|clamber-kafka-client#consumer-2| [thrd:app]: Configuration property request.timeout.ms is a producer property and will be ignored by this consumer instance
+Kafka AppState 创建成功
+轮询消费者服务已启动
+开始轮询消费主题: ["test-topic", "user-messages", "notifications"] (超时: 5s)
+服务器启动在 http://0.0.0.0:3000
+[2m2025-09-29T01:43:52.709433Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: UnknownTopicOrPartition (Broker: Unknown topic or partition): Subscribed topic not available: notifications: Broker: Unknown topic or partition
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: UnknownTopicOrPartition (Broker: Unknown topic or partition)
+[2m2025-09-29T01:43:53.722701Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: UnknownTopicOrPartition (Broker: Unknown topic or partition): Subscribed topic not available: user-messages: Broker: Unknown topic or partition
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: UnknownTopicOrPartition (Broker: Unknown topic or partition)
+[2m2025-09-29T01:44:23.533179Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 1/1 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:23.842908Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 1/1 brokers are down
+[2m2025-09-29T01:44:24.536303Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:24.831219Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:25.537783Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:25.836796Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:26.544675Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:26.842667Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:27.552009Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:27.851258Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:28.558695Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:28.857382Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:29.565478Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:29.863072Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:30.567716Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:30.865697Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:31.572501Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:31.868507Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:32.588501Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:32.871095Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:33.598635Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:33.883839Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:34.607513Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:34.891870Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:35.612212Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:35.892753Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:36.614110Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:36.911734Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:37.628073Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:37.925610Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:38.631264Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:38.929680Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:39.639553Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:39.936125Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:40.644395Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:40.942540Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:41.649800Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:41.949642Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:42.657823Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:42.957539Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:43.664361Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:43.964831Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:44.670907Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:44.968696Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:45.676714Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:45.973232Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:46.684054Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:46.980501Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:47.699069Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:47.982502Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:48.706911Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:48.985410Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:49.723351Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:49.990536Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:50.726704Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:50.992482Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:51.737962Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:52.005893Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:52.740157Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:53.011563Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:53.745503Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:54.014025Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:54.750708Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:55.016283Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:55.752351Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:56.017941Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:56.756070Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:57.021821Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:57.763868Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:58.025827Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:58.774498Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:44:59.037113Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:59.787535Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:00.039635Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:00.796387Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:01.046840Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:01.800086Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:02.055046Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:02.805780Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:03.055001Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:03.820868Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:04.069748Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:04.835672Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:05.070798Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:05.845066Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:06.081595Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:06.853783Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:07.088497Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:07.859686Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:08.095514Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:08.864079Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:09.116775Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:09.875596Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:10.111069Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:10.879064Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:11.115184Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:11.884245Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:12.116982Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:12.891756Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:13.126056Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:13.894391Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:14.129668Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:14.904637Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:15.137829Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:15.906135Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:16.139547Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:16.911415Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:17.148391Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:17.922036Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:18.161465Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:18.932301Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:19.167579Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:19.935377Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:20.171805Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:20.945372Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:21.180331Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:21.950706Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:22.185082Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:22.957742Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:23.193806Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:23.959199Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:24.193309Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:24.961664Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:25.198653Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:25.969931Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:26.205636Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:26.976145Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:27.207173Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:27.981349Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:28.217497Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:28.983772Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:29.219116Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:29.999033Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:30.233376Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:31.008495Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:31.245149Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:32.024102Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:32.255892Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:33.029341Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:33.264448Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:34.036499Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: AllBrokersDown (Local: All broker connections are down)
+[2m2025-09-29T01:45:34.269473Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+error: process didn't exit successfully: `target\debug\examples\axum_kafka_example.exe` (exit code: 0xc000013a, STATUS_CONTROL_C_EXIT)
+^C

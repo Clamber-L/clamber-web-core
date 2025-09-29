@@ -1,0 +1,145 @@
+warning: Patch `sfv v0.9.4 (https://github.com/undef1nd/sfv.git?tag=v0.9.4#e6499d8c)` was not used in the crate graph.
+Check that the patched package version and available features are compatible
+with the dependency requirements. If the patch has a different version from
+what is locked in the Cargo.lock file, run `cargo update` to use the new
+version. This may also occur with an optional dependency that is not enabled.
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling clamber-web-core v0.1.2 (E:\project\rust\clamber-web-core)
+warning: unused imports: `ResponseHeader` and `StatusCode`
+ --> src\proxy\enhanced_proxy_service.rs:9:36
+  |
+9 | use pingora::http::{RequestHeader, ResponseHeader, StatusCode};
+  |                                    ^^^^^^^^^^^^^^  ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: field `config` is never read
+   --> src\kafka\kafka_consumer.rs:182:5
+    |
+180 | pub struct AdvancedKafkaConsumer {
+    |            --------------------- field in this struct
+181 |     consumer: StreamConsumer,
+182 |     config: KafkaConsumerConfig,
+    |     ^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: field `config` is never read
+   --> src\kafka\kafka_consumer.rs:248:5
+    |
+246 | pub struct ConsumerGroupManager {
+    |            -------------------- field in this struct
+247 |     consumers: Vec<KafkaConsumer>,
+248 |     config: KafkaConsumerConfig,
+    |     ^^^^^^
+
+warning: field `static_services` is never read
+  --> src\proxy\enhanced_proxy_service.rs:19:5
+   |
+17 | pub struct EnhancedProxyService {
+   |            -------------------- field in this struct
+18 |     config: Arc<ProxyConfig>,
+19 |     static_services: HashMap<String, StaticFileService>,
+   |     ^^^^^^^^^^^^^^^
+
+warning: method `guess_content_type` is never used
+  --> src\proxy\static_file_service.rs:70:8
+   |
+15 | impl StaticFileService {
+   | ---------------------- method in this implementation
+...
+70 |     fn guess_content_type(&self, path: &Path) -> &'static str {
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: `clamber-web-core` (lib) generated 5 warnings (run `cargo fix --lib -p clamber-web-core` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 11.88s
+     Running `target\debug\examples\axum_kafka_config_example.exe`
+启动 Axum + Kafka 配置文件示例应用...
+%4|1759110227.264|CONFWARN|axum-consumer#consumer-2| [thrd:app]: Configuration property request.timeout.ms is a producer property and will be ignored by this consumer instance
+Kafka AppState 从配置文件创建成功
+轮询消费者服务已启动
+开始轮询消费主题: ["test-topic", "config-example"] (超时: 10s)
+服务器启动在 http://0.0.0.0:3001
+[2m2025-09-29T01:43:49.791630Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: UnknownTopicOrPartition (Broker: Unknown topic or partition): Subscribed topic not available: config-example: Broker: Unknown topic or partition
+轮询消息失败: 消息接收失败: 接收消息失败: Message consumption error: UnknownTopicOrPartition (Broker: Unknown topic or partition)
+[2m2025-09-29T01:44:18.460853Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 1/1 brokers are down
+[2m2025-09-29T01:44:19.468825Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:20.474313Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:21.476460Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:22.486818Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:23.489660Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:24.493480Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:25.510076Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:26.502234Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:27.507565Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:28.513729Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:29.524038Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:30.526993Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:31.530093Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:32.546362Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:33.556422Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:34.566616Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:35.571571Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:36.573949Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:37.588071Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:38.590062Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:39.595314Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:40.600627Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:41.606645Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:42.616804Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:43.620517Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:44.627655Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:45.635202Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:46.642714Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:47.656826Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:48.666464Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:49.679827Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:50.682197Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:51.692683Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:52.696498Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:53.704760Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:54.709618Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:55.712531Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:56.713809Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:57.720655Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:58.732744Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:44:59.747807Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:00.754249Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:01.759068Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:02.765099Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:03.778673Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:04.792008Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:05.804003Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:06.809330Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:07.815338Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:08.818771Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:09.832938Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:10.834789Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:11.840725Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:12.850072Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:13.850875Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:14.859622Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:15.864618Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:16.866882Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:17.876660Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:18.890202Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:19.892599Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:20.901472Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:21.906509Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:22.912675Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:23.918468Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:24.924019Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:25.942390Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:26.934272Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:27.939488Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:28.942445Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:29.958194Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:30.964053Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:31.970488Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:32.970065Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:33.980231Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:34.988800Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+[2m2025-09-29T01:45:35.997513Z[0m [31mERROR[0m [2mrdkafka::client[0m[2m:[0m librdkafka: Global error: AllBrokersDown (Local: All broker connections are down): 2/2 brokers are down
+^C

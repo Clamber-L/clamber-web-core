@@ -6,12 +6,17 @@
 //! - 消费者服务
 //! - 错误处理
 
+pub mod axum_integration;
 pub mod kafka_config;
 pub mod kafka_consumer;
 pub mod kafka_error;
 pub mod kafka_producer;
 
 // 重新导出主要类型
+pub use axum_integration::{
+    KafkaAppState, PollingConsumerService, create_default_kafka_app_state,
+    create_kafka_app_state_from_config,
+};
 pub use kafka_config::{KafkaBaseConfig, KafkaConsumerConfig, KafkaProducerConfig};
 pub use kafka_consumer::{
     AdvancedKafkaConsumer, ConsumerGroupManager, KafkaConsumer, MessageHandler,

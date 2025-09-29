@@ -1,0 +1,50 @@
+# Kafka API 代理配置文件
+# 将请求转发到 Kafka example API 和静态文件服务
+
+server_name: "kafka-proxy.local"
+listen: "0.0.0.0:8080"
+ssl: false
+ssl_cert: null
+ssl_key: null
+
+# 上游服务器配置
+upstreams:
+  kafka_api:
+    servers:
+      - "127.0.0.1:3000"  # Kafka example API 服务器
+    lb_strategy: "roundrobin"
+  
+  kafka_config_api:
+    servers:
+      - "127.0.0.1:3001"  # Kafka config example API 服务器
+    lb_strategy: "roundrobin"
+
+# 位置配置
+locations:
+  # API 路由 - 转发到 Kafka example
+  - path: "/api/kafka/"
+    type: "proxy"
+    proxy_pass: "kafka_api"
+    root: null
+    index: null
+  
+  # 配置 API 路由 - 转发到 Kafka config example
+  - path: "/api/config/"
+    type: "proxy"
+    proxy_pass: "kafka_config_api"
+    root: null
+    index: null
+  
+  # 静态文件服务
+  - path: "/static/"
+    type: "static"
+    proxy_pass: null
+    root: "./static"
+    index: ["index.html", "index.htm"]
+  
+  # 根路径 - 提供默认页面
+  - path: "/"
+    type: "static"
+    proxy_pass: null
+    root: "./static"
+    index: ["index.html", "index.htm"]

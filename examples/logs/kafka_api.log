@@ -1,0 +1,65 @@
+    Blocking waiting for file lock on package cache
+warning: Patch `sfv v0.9.4 (https://github.com/undef1nd/sfv.git?tag=v0.9.4#e6499d8c)` was not used in the crate graph.
+Check that the patched package version and available features are compatible
+with the dependency requirements. If the patch has a different version from
+what is locked in the Cargo.lock file, run `cargo update` to use the new
+version. This may also occur with an optional dependency that is not enabled.
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+warning: unused imports: `ResponseHeader` and `StatusCode`
+ --> src\proxy\enhanced_proxy_service.rs:9:36
+  |
+9 | use pingora::http::{RequestHeader, ResponseHeader, StatusCode};
+  |                                    ^^^^^^^^^^^^^^  ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: field `config` is never read
+   --> src\kafka\kafka_consumer.rs:182:5
+    |
+180 | pub struct AdvancedKafkaConsumer {
+    |            --------------------- field in this struct
+181 |     consumer: StreamConsumer,
+182 |     config: KafkaConsumerConfig,
+    |     ^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: field `config` is never read
+   --> src\kafka\kafka_consumer.rs:248:5
+    |
+246 | pub struct ConsumerGroupManager {
+    |            -------------------- field in this struct
+247 |     consumers: Vec<KafkaConsumer>,
+248 |     config: KafkaConsumerConfig,
+    |     ^^^^^^
+
+warning: field `static_services` is never read
+  --> src\proxy\enhanced_proxy_service.rs:19:5
+   |
+17 | pub struct EnhancedProxyService {
+   |            -------------------- field in this struct
+18 |     config: Arc<ProxyConfig>,
+19 |     static_services: HashMap<String, StaticFileService>,
+   |     ^^^^^^^^^^^^^^^
+
+warning: method `guess_content_type` is never used
+  --> src\proxy\static_file_service.rs:70:8
+   |
+15 | impl StaticFileService {
+   | ---------------------- method in this implementation
+...
+70 |     fn guess_content_type(&self, path: &Path) -> &'static str {
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: `clamber-web-core` (lib) generated 5 warnings (run `cargo fix --lib -p clamber-web-core` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.67s
+     Running `E:\project\rust\clamber-web-core\target\debug\examples\axum_kafka_example.exe`
+启动 Axum + Kafka 示例应用...
+%4|1759110314.265|CONFWARN|clamber-kafka-client#consumer-2| [thrd:app]: Configuration property request.timeout.ms is a producer property and will be ignored by this consumer instance
+Kafka AppState 创建成功
+轮询消费者服务已启动
+开始轮询消费主题: ["test-topic", "user-messages", "notifications"] (超时: 5s)
+Error: Os { code: 10048, kind: AddrInUse, message: "通常每个套接字地址(协议/网络地址/端口)只允许使用一次。" }
+error: process didn't exit successfully: `E:\project\rust\clamber-web-core\target\debug\examples\axum_kafka_example.exe` (exit code: 1)

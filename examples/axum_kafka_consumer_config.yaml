@@ -1,0 +1,21 @@
+# Axum Kafka 消费者配置示例
+
+base:
+  bootstrap_servers:
+    - "localhost:9092"
+  client_id: "axum-consumer"
+  security_protocol: "PLAINTEXT"
+  connection_timeout_ms: 30000
+  request_timeout_ms: 30000
+
+# 消费者特定配置
+group_id: "axum-example-group"
+enable_auto_commit: true
+auto_commit_interval_ms: 5000
+session_timeout_ms: 30000
+heartbeat_interval_ms: 3000
+max_poll_interval_ms: 300000
+partition_assignment_strategy: "range"
+auto_offset_reset: "latest"
+fetch_min_bytes: 1
+isolation_level: "read_uncommitted"
