@@ -31,8 +31,10 @@ impl EnhancedProxyServer {
 
         // 创建增强代理服务
         let proxy_service = EnhancedProxyService::new((*self.config).clone());
-        let service = http_proxy_service(&self.server.configuration, proxy_service);
+        let mut service = http_proxy_service(&self.server.configuration, proxy_service);
 
+        // 关键修复：告诉服务监听指定的 TCP 地址
+        service.add_tcp(&self.config.listen);
         // 添加服务到服务器
         self.server.add_service(service);
 
